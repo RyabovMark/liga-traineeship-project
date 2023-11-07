@@ -1,17 +1,37 @@
 .search-panel {
   position: relative;
+  overflow: hidden;
+  width: 220px;
+  height: 40px;
 }
 
 .search-input {
-  width: auto;
+  width: 100%;
+  height: 100%;
   flex-grow: 1;
   margin-right: 3px;
 }
 
-.close {
+.reset-btn {
+  transition: 0.5s;
+}
+
+.fa-close{
+  width: 20px;
+  height: 20px;
+}
+
+.open, .close {
   position: absolute;
   top: 6px;
-  right: 10px;
   border: none;
   background-color: inherit;
+}
+
+.open{
+  right: 10px;
+}
+
+.close {
+  right: -40px;
 }
