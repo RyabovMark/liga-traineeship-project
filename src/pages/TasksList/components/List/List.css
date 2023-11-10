@@ -1,0 +1,30 @@
+.task-list {
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
+  min-height: inherit;
+  background-color: #D0D3DC;
+  border-radius: 30px;
+  transition: 0.5ms ease all;
+  border: 10px;
+  padding: 20px;
+}
+
+.task-list--display {
+  display: flex;
+}
+
+.task-list--none {
+  display: none;
+}
+
+.task-list__todo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 100%;
+  gap: 10px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+

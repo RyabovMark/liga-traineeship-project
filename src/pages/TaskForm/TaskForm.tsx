@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Todo } from 'pages/TasksList/components/Todo/Todo';
 import { FormHandler, IStateProp } from 'pages/TaskForm/TaskForm.types';
 
 export const TaskForm = () => {
   const { state } = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [task, setTask] = useState<IStateProp>({
     'name': '',
     'info': 'false',
@@ -23,6 +23,7 @@ export const TaskForm = () => {
       setTask(state);
     }
   }, []);
+
   return (
     <div>
       <form>
@@ -41,7 +42,6 @@ export const TaskForm = () => {
         </select>
         <button type="submit">{task ? 'Send' : 'Change'}</button>
       </form>
-      <Todo />
     </div>
   );
 };

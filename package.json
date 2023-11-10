@@ -15,7 +15,8 @@
     "lint:styles": "stylelint ./src/**/*.css",
     "fix:styles": "stylelint --fix ./src/**/*.css",
     "lint:ts": "eslint src/**/*.{ts,tsx}",
-    "fix:ts": "eslint src/**/*.{ts,tsx} --quiet --fix"
+    "fix:ts": "eslint src/**/*.{ts,tsx} --quiet --fix",
+    "swagger-ts": "npx openapi-typescript http://37.220.80.108/swagger.json -o src/types/api.ts"
   },
   "author": "",
   "license": "ISC",

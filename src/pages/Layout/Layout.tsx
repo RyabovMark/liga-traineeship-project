@@ -3,8 +3,6 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Header } from './component/Header/Header';
 import { Footer } from './component/Footer/Footer';
 import './Layout.css';
-import { Loader } from 'components/Loader';
-import { NavButton } from 'components/NavButton/NavButton';
 
 export const Layout = (): JSX.Element => {
   const location = useLocation();

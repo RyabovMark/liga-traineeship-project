@@ -1,0 +1,50 @@
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0.25rem;
+  width: 200px;
+  padding: 10px;
+}
+
+.dropdown button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dropdown__panel {
+  position: absolute;
+
+  width: 200px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 10px;
+  border-radius: 0 0 0.25rem 0.25rem;
+  border-top: none;
+}
+
+.dropdown__panel, .dropdown button {
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  color: #212529;
+}
+
+.dropdown__panel-field{
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.dropdown__panel-field label{
+  width: 100%;
+  cursor: pointer;
+}

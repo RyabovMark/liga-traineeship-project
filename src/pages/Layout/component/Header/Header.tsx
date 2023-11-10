@@ -3,7 +3,7 @@ import './Header.css';
 import { useLocation } from 'react-router-dom';
 import { UseDebounce } from '../../../../hooks/useDebounce';
 import { SearchInput } from 'components/SearchInput/SearchInput';
-import { NavButton } from 'components/NavButton/NavButton';
+import { NavButton } from 'components/NavButton';
 
 export const Header = (): JSX.Element => {
   const { pathname } = useLocation();
