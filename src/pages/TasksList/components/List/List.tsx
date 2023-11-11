@@ -6,10 +6,12 @@ import { Loader } from 'components/Loader';
 import { ITasksListProp } from 'pages/TasksList/components/List/List.types';
 import { NavButton } from 'components/NavButton';
 import { Todo } from 'pages/TasksList/components/Todo/Todo';
+import { TrashBasket } from 'assets/icons';
 
-export const List = ({ header, display }: ITasksListProp): JSX.Element => {
+export const List = ({ header, display, id, onToggle }: ITasksListProp): JSX.Element => {
   const dispatch = useAppDispatch();
   const { collection, loadings } = useAppSelector((state) => state.todo);
+  const { value } = useAppSelector((state) => state.error);
   const className = `task-list ${display ? 'task-list--display' : 'task-list--none'} `;
   const tasks = collection[header];
   const isLoading = loadings[header];
@@ -21,7 +23,9 @@ export const List = ({ header, display }: ITasksListProp): JSX.Element => {
     }
   }, []);
 
-  return (
+  return value ? (
+    <span>value</span>
+  ) : (
     <div className={className}>
       <h3>{header}</h3>
       <div className="task-list__todo-container" ref={listRef}>
@@ -31,8 +35,8 @@ export const List = ({ header, display }: ITasksListProp): JSX.Element => {
           ))}
         </Loader>
       </div>
-      <div>
-        <button>Remove list</button>
+      <div className="task-list__buttons">
+        {header !== 'All task' && <TrashBasket className="pulse" onClick={() => onToggle(false, id)} />}
         <NavButton to="/task_form" text="Add a new card" state={{ header }} />
       </div>
     </div>

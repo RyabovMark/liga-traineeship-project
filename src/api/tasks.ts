@@ -6,7 +6,6 @@ import {
   GetTaskResponse,
   GetTasksRequest,
   GetTasksResponse,
-  PatchTaskRequest,
   PatchTaskResponse,
   PostTaskRequest,
   PostTaskResponse,
@@ -32,7 +31,7 @@ export default {
       params: { ...parameters },
     });
   },
-  patchTask: async function (body: PatchTaskRequest): Promise<AxiosResponse<PatchTaskResponse>> {
+  patchTask: async function (body: GetTaskResponse): Promise<AxiosResponse<PatchTaskResponse>> {
     return await axiosInstance.patch(`${body.id}`, { ...body });
   },
   deleteOne: async function (id: DeleteTaskRequest): Promise<AxiosResponse<DeleteTaskResponse>> {

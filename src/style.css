@@ -15,3 +15,11 @@
   background: linear-gradient(180deg, #7e8080, #C1C7D0);
   border-radius: 6px;
 }
+
+body {
+  color: #212529
+}
+
+a{
+  text-decoration: none;
+}

@@ -32,7 +32,7 @@ export interface paths {
         };
       };
     };
-    /** @description Delete task */
+    /** @description TrashBasket task */
     delete: {
       parameters: {
         path: {
@@ -55,7 +55,7 @@ export interface paths {
           taskId: string;
         };
       };
-      requestBody?: {
+      requestBody: {
         content: {
           'application/json': {
             isImportant?: boolean;

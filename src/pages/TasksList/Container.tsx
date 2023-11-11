@@ -36,14 +36,19 @@ export const Container: React.FC = () => {
     );
   };
 
-  const deleteFromScreen = (id: number) => {};
+  // const deleteFromScreen = (id: number) => {};
 
   return (
-    <div className="list-container">
-      <Select headers={listsHeadersWithoutAll} onToggle={inputToggle} />
-      {listsHeaders.map(
-        (list) => list.select && <List key={list.id} header={list.title} display={list.select} onToggle={inputToggle} />
-      )}
+    <div className="list">
+      <Select headers={listsHeadersWithoutAll} onToggle={inputToggle} className="list__select" />
+      <div className="list-container">
+        {listsHeaders.map(
+          (list) =>
+            list.select && (
+              <List key={list.id} id={list.id} header={list.title} display={list.select} onToggle={inputToggle} />
+            )
+        )}
+      </div>
     </div>
   );
 };

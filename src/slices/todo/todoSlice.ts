@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ICollection, SetTasksPayload, ToggleLoadingsPayload } from 'types/redux';
+import { ICollection, SetTaskPayload, SetTasksPayload, ToggleLoadingsPayload } from 'types/redux';
 
 const state: ICollection = {
   collection: {
@@ -9,6 +9,7 @@ const state: ICollection = {
     'Important tasks': [],
     'Not important tasks': [],
     'By name': [],
+    'Find one': {},
   },
   loadings: {
     'All task': false,
@@ -17,6 +18,7 @@ const state: ICollection = {
     'Important tasks': false,
     'Not important tasks': false,
     'By name': false,
+    'Find one': false,
   },
   popupLoading: false,
 };
@@ -28,6 +30,9 @@ export const todoSlice = createSlice({
     setTasks: (state, { payload: { data, field } }: PayloadAction<SetTasksPayload>) => {
       state.collection[field] = data;
     },
+    setTask: (state, { payload: { data } }: PayloadAction<SetTaskPayload>) => {
+      state.collection['Find one'] = data;
+    },
     toggleLoading: (state, { payload: { value, field } }: PayloadAction<ToggleLoadingsPayload>) => {
       state.loadings[field] = value;
     },
@@ -37,5 +42,5 @@ export const todoSlice = createSlice({
   },
 });
 
-export const { setTasks, toggleLoading, setPopupLoading } = todoSlice.actions;
+export const { setTasks, setTask, toggleLoading, setPopupLoading } = todoSlice.actions;
 export default todoSlice.reducer;

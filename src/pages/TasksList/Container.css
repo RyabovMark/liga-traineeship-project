@@ -1,12 +1,13 @@
 .list-container {
   max-height: inherit;
-  min-height: calc(100vh - 140px);
+  min-height: calc(100vh - 250px);
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   gap: 20px;
   overflow-x: auto;
   overflow-y: hidden;
+  padding-bottom: 20px;
 }
 
 .list-container>*{

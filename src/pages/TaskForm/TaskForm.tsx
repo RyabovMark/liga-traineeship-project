@@ -1,42 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Todo } from 'pages/TasksList/components/Todo/Todo';
-import { FormHandler, IStateProp } from 'pages/TaskForm/TaskForm.types';
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { fetchGetTask } from '../../slices/todo/todo.actions';
 
 export const TaskForm = () => {
-  const { state } = useLocation();
-  // const navigate = useNavigate();
-  const [task, setTask] = useState<IStateProp>({
-    'name': '',
-    'info': 'false',
-    'isCompleted': 'false',
-    'isImportant': 'false',
-  });
-
-  const handlerForm: FormHandler = (e): void => {
-    const { name, value } = e.target;
-    setTask({ ...task, [name]: value });
-  };
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const {
+    collection: { 'Find one': task },
+  } = useAppSelector((state) => state.todo);
 
   useEffect(() => {
-    if (state) {
-      setTask(state);
+    if (id) {
+      dispatch(fetchGetTask(id));
     }
-  }, []);
+  }, [id]);
 
   return (
     <div>
       <form>
-        <input type="text" name="name" value={task.name} onChange={handlerForm} />
-        <select name="info" onChange={handlerForm} value={task.info}>
+        <input
+          type="text"
+          name="name"
+          value={task.name}
+          onChange={() => {
+            return;
+          }}
+        />
+        <select
+          name="info"
+          onChange={() => {
+            return;
+          }}
+          value={task.info}>
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
-        <select name="isCompleted" onChange={handlerForm} value={task.isCompleted}>
+        <select
+          name="isCompleted"
+          onChange={() => {
+            return;
+          }}
+          value={''}>
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
-        <select name="isImportant" onChange={handlerForm} value={task.isImportant}>
+        <select
+          name="isImportant"
+          onChange={() => {
+            return;
+          }}
+          value={''}>
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
