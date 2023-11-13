@@ -17,6 +17,26 @@ export const axiosInstance = axios.create({
     'Content-Type': 'application/json;charset=utf-8',
   },
   responseType: 'json',
+  transformResponse: [
+    (data) => {
+      const response = JSON.parse(data);
+      if (Array.isArray(response)) {
+        const collection = response.filter(({ id, isCompleted, info, name, isImportant }: GetTaskResponse) => {
+          return (
+            id &&
+            name &&
+            info &&
+            isCompleted &&
+            typeof isCompleted === 'boolean' &&
+            isImportant &&
+            typeof isImportant === 'boolean'
+          );
+        });
+        return collection;
+      }
+      return response;
+    },
+  ],
 });
 
 export default {

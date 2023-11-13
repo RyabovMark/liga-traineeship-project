@@ -23,16 +23,12 @@ export const List = ({ header, display, id, onToggle }: ITasksListProp): JSX.Ele
     }
   }, []);
 
-  return value ? (
-    <span>value</span>
-  ) : (
+  return (
     <div className={className}>
       <h3>{header}</h3>
       <div className="task-list__todo-container" ref={listRef}>
         <Loader isLoading={isLoading}>
-          {tasks.map((item) => (
-            <Todo key={item.id} item={item} header={header} />
-          ))}
+          {!value && tasks.map((item) => <Todo key={item.id} item={item} header={header} />)}
         </Loader>
       </div>
       <div className="task-list__buttons">

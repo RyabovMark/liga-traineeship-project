@@ -26,9 +26,14 @@ export interface ICollection {
   popupLoading: boolean;
 }
 
-export type Fields = 'All task' | 'Done' | 'Not Done' | 'Important tasks' | 'Not important tasks' | 'By name';
-
-// | 'Find one';
+export type Fields =
+  | 'All task'
+  | 'Done'
+  | 'Not Done'
+  | 'Important tasks'
+  | 'Not important tasks'
+  | 'By name'
+  | 'Find one';
 
 export interface SetTasksPayload {
   data: GetTasksResponse;

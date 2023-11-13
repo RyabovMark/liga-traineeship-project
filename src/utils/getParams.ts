@@ -9,3 +9,27 @@ export const getParams = (field: string, search?: string): GetTasksRequest => {
   // @ts-ignore
   return params[field];
 };
+
+type GetFieldType = { isImportant?: boolean; isCompleted?: boolean };
+
+enum GetFieldOutput {
+  important = 'Important tasks',
+  notImportant = 'Not important tasks',
+  done = 'Done',
+  notDone = 'Not Done',
+}
+
+export const getField = (value: GetFieldType): GetFieldOutput | undefined => {
+  if (value.isImportant) {
+    return GetFieldOutput.important;
+  }
+  if (!value.isImportant) {
+    return GetFieldOutput.notImportant;
+  }
+  if (value.isCompleted) {
+    return GetFieldOutput.done;
+  }
+  if (!value.isCompleted) {
+    return GetFieldOutput.notDone;
+  }
+};

@@ -6,28 +6,28 @@ import { fetchDeleteTask } from '../../../../slices/todo/todo.actions';
 import { Clock, Completed, Delete, Edit, NotDone } from 'assets/icons';
 import { ITodoProps } from 'pages/TasksList/components/Todo/Todo.type';
 
-export const Todo = ({ item: { id, isImportant, isCompleted, info, name }, header }: ITodoProps) => {
+export const Todo = ({ item }: ITodoProps) => {
   const dispatch = useAppDispatch();
 
   const handleDeleteTodo = (): void => {
-    dispatch(fetchDeleteTask(String(id), header));
+    dispatch(fetchDeleteTask(item));
   };
 
   return (
     <div className="todo">
       <div className="todo__title">
-        <h6>{name ? name : 'task has no any title'}</h6>
-        <NavLink to={`/task_form/${id}`}>
+        <h6>{item.name}</h6>
+        <NavLink to={`/task_form/${item.id}`}>
           <Edit />
         </NavLink>
       </div>
-      <p>{info ? info : 'task has no any text'}</p>
+      <p>{item.info}</p>
       <div className="todo__indicators">
         <div className="indicators__delete-container">
           <Delete onClick={handleDeleteTodo} />
         </div>
-        {isImportant && <Clock className="indicators__clock" />}
-        {isCompleted ? <Completed className="indicators__done" /> : <NotDone className="indicators__not-done" />}
+        {item.isImportant && <Clock className="indicators__clock" />}
+        {item.isCompleted ? <Completed className="indicators__done" /> : <NotDone className="indicators__not-done" />}
       </div>
     </div>
   );
