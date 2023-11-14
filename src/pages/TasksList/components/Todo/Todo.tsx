@@ -1,16 +1,17 @@
 import React from 'react';
 import './Todo.css';
 import { NavLink } from 'react-router-dom';
-import { useAppDispatch } from '../../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { fetchDeleteTask } from '../../../../slices/todo/todo.actions';
 import { Clock, Completed, Delete, Edit, NotDone } from 'assets/icons';
 import { ITodoProps } from 'pages/TasksList/components/Todo/Todo.type';
 
 export const Todo = ({ item }: ITodoProps) => {
   const dispatch = useAppDispatch();
+  const filter = useAppSelector((state) => state.todo.filter);
 
   const handleDeleteTodo = (): void => {
-    dispatch(fetchDeleteTask(item));
+    dispatch(fetchDeleteTask({ ...item }, filter));
   };
 
   return (

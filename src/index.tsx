@@ -8,6 +8,7 @@ import { Container } from 'pages/TasksList/Container';
 import { TaskForm } from 'pages/TaskForm/TaskForm';
 import { ErrorPage } from 'pages/ErrorPage/ErrorPage';
 import { Layout } from 'pages/Layout/Layout';
+import { createTheme, ThemeProvider } from '@mui/system';
 
 const router = createBrowserRouter([
   {
@@ -31,8 +32,22 @@ const router = createBrowserRouter([
   },
 ]);
 
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 320,
+      md: 768,
+      lg: 992,
+      xl: 1280,
+    },
+  },
+});
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <Provider store={store}>
-    <RouterProvider router={router} />
-  </Provider>
+  <ThemeProvider theme={theme}>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </ThemeProvider>
 );

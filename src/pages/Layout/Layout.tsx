@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Box } from '@mui/material';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Header } from './component/Header/Header';
 import { Footer } from './component/Footer/Footer';
@@ -15,12 +16,12 @@ export const Layout = (): JSX.Element => {
   }, [location]);
 
   return (
-    <div className="container">
+    <Box component="div" className="container">
       <Header />
-      <main>
+      <Box component="main">
         <Outlet />
-      </main>
+      </Box>
       <Footer />
-    </div>
+    </Box>
   );
 };

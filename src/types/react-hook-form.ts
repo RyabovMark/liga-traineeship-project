@@ -3,4 +3,4 @@ export interface ITaskSubmitForm {
   info: string;
   isCompleted: boolean;
   isImportant: boolean;
-};
+}

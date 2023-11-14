@@ -5,7 +5,7 @@ import { SearchInputProps } from './SearchInput.types';
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function SearchInput(
   { onChange, value, onReset },
   ref
-) {
+): JSX.Element {
   const btnRef = useRef<HTMLButtonElement>(null);
   const onSearchInputChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     onChange(evt.target.value);

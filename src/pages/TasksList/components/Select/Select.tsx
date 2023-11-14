@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Select.css';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
+import { setFilter } from '../../../../slices/todo/todoSlice';
 import { SelectProps } from 'pages/TasksList/components/Select/Select.types';
 import { BotArrow, TopArrow } from 'assets/icons';
 
-export const Select = ({ headers, onToggle, className }: SelectProps): JSX.Element => {
+export const Select = ({ headers, className }: SelectProps): JSX.Element => {
+  const filter = useAppSelector((state) => state.todo.filter);
+  const dispatch = useAppDispatch();
   const [displayDropdown, setDisplayDropdown] = useState<boolean>(false);
   const classes = `dropdown ${className}`;
   const fieldRef = useRef<HTMLFieldSetElement>(null);
@@ -31,15 +35,15 @@ export const Select = ({ headers, onToggle, className }: SelectProps): JSX.Eleme
       <button onClick={mouseMoveHandle}>--Select a task list--{displayDropdown ? <TopArrow /> : <BotArrow />}</button>
       {displayDropdown && (
         <div className="dropdown__panel">
-          {headers.map((obj) => (
-            <div className="dropdown__panel-field" key={obj.id}>
+          {headers.map((title) => (
+            <div className="dropdown__panel-field" key={title.id}>
               <input
-                id={`input-${obj.title}`}
-                checked={obj.select}
+                id={`input-${title.title}`}
+                checked={title.title === filter}
                 type="checkbox"
-                onChange={(e) => onToggle(e.target.checked, obj.id)}
+                onChange={() => dispatch(setFilter(title.title))}
               />
-              <label htmlFor={`input-${obj.title}`}>{obj.title}</label>
+              <label htmlFor={`input-${title.title}`}>{title.title}</label>
             </div>
           ))}
         </div>

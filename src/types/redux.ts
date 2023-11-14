@@ -8,7 +8,7 @@ export interface ICollection {
   collection: {
     'All task': GetTasksResponse;
     'Done': GetTasksResponse;
-    'Not Done': GetTasksResponse;
+    'Not done': GetTasksResponse;
     'Important tasks': GetTasksResponse;
     'Not important tasks': GetTasksResponse;
     'By name': GetTasksResponse;
@@ -17,31 +17,26 @@ export interface ICollection {
   loadings: {
     'All task': boolean;
     'Done': boolean;
-    'Not Done': boolean;
+    'Not done': boolean;
     'Important tasks': boolean;
     'Not important tasks': boolean;
     'By name': boolean;
     'Find one': boolean;
   };
   popupLoading: boolean;
+  filter: Fields;
+  searchBy: string;
 }
 
-export type Fields =
-  | 'All task'
-  | 'Done'
-  | 'Not Done'
-  | 'Important tasks'
-  | 'Not important tasks'
-  | 'By name'
-  | 'Find one';
+export type Fields = 'All task' | 'Done' | 'Not done' | 'Important tasks' | 'Not important tasks' | 'By name';
 
 export interface SetTasksPayload {
   data: GetTasksResponse;
-  field: Fields | 'Find one';
+  field: Fields;
 }
 
 export interface SetTaskPayload {
-  data: GetTaskResponse;
+  data?: GetTaskResponse;
 }
 
 export interface ToggleLoadingsPayload {

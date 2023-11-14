@@ -10,8 +10,8 @@
   margin-bottom: 30px;
 }
 
-.task-list{
-  padding:  20px 5px 20px 10px;
+.task-list {
+  padding: 20px 5px 20px 10px;
 }
 
 .task-list__todo-container {
@@ -49,6 +49,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: end;
+  height: 40px;
   margin-top: 10px;
   max-height: 70px;
   padding-right: 10px;
@@ -85,15 +86,11 @@
   }
 }
 
-.task-list__buttons svg:hover {
+.task-list__buttons .pulse:hover {
   animation: pulse 1s infinite;
   opacity: 1;
 }
 
-.task-list__buttons svg:hover::after {
-  content: 'Delete this list';
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 2;
+.task-list__buttons .untouchable {
+  cursor: default;
 }

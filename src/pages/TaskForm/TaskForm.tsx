@@ -1,15 +1,16 @@
-import React, { ChangeEvent, useEffect, useMemo } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
-import { connect } from 'react-redux';
+import { types } from 'sass';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { fetchGetTask, fetchPatchTask } from '../../slices/todo/todo.actions';
+import { fetchCreateTask, fetchGetTask, fetchPatchTask } from '../../slices/todo/todo.actions';
+import { setTask } from '../../slices/todo/todoSlice';
 import { ITaskSubmitForm } from 'types/react-hook-form';
 import { Loader } from 'components/Loader';
 
-export const TaskForm = () => {
+export const TaskForm = (): JSX.Element => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -18,22 +19,6 @@ export const TaskForm = () => {
     loadings,
   } = useAppSelector((state) => state.todo);
   const isLoading = loadings['Find one'];
-
-  // const defaultValues: ITaskSubmitForm = {
-  //   name: task.name ? task.name : '',
-  //   info: task.info ? task.info : '',
-  //   isCompleted: task.isCompleted || false,
-  //   isImportant: task.isImportant || false,
-  // };
-
-  const defaultValues = useMemo(() => {
-    return {
-      name: task.name ? task.name : '',
-      info: task.info ? task.info : '',
-      isCompleted: task.isCompleted || false,
-      isImportant: task.isImportant || false,
-    };
-  }, [task]);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -44,21 +29,28 @@ export const TaskForm = () => {
       .required('The info of the task is a required field')
       .min(6, 'Info must be at least 6 characters')
       .max(40, 'Info must not exceed 40 characters'),
-    isCompleted: Yup.bool().required('Required field'),
-    isImportant: Yup.bool()
-      .required('Required field')
-      .oneOf([defaultValues.isCompleted], 'The task cannot be marked as important because it is marked as completed'),
+    isCompleted: Yup.bool(),
+    isImportant: Yup.bool(),
   });
 
-  const { register, handleSubmit, reset, control, setValue } = useForm<ITaskSubmitForm>({
-    defaultValues,
+  const { formState, handleSubmit, reset, control, setValue } = useForm<ITaskSubmitForm>({
+    defaultValues: {
+      name: '',
+      info: '',
+      isCompleted: false,
+      isImportant: false,
+    },
     mode: 'onBlur',
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = (body: ITaskSubmitForm) => {
-    dispatch(fetchPatchTask(body));
-    navigate('/');
+  const onSubmit = async (body: ITaskSubmitForm) => {
+    if (id) {
+      await dispatch(fetchPatchTask({ ...body }, Number(id)));
+    } else {
+      await dispatch(fetchCreateTask({ ...body }));
+    }
+    return navigate('..');
   };
 
   const onNameChange = (e: ChangeEvent<HTMLInputElement>) => setValue('name', e.target.value);
@@ -68,8 +60,20 @@ export const TaskForm = () => {
   const onImportantChange = (e: ChangeEvent<HTMLSelectElement>) => setValue('isImportant', JSON.parse(e.target.value));
 
   useEffect(() => {
+    dispatch(setTask({}));
     id && dispatch(fetchGetTask(id));
   }, []);
+
+  useEffect(() => {
+    if (task) {
+      reset({
+        name: task.name,
+        info: task.info,
+        isCompleted: task.isCompleted,
+        isImportant: task.isImportant,
+      });
+    }
+  }, [task]);
 
   return (
     <Loader isLoading={isLoading}>
@@ -116,10 +120,14 @@ export const TaskForm = () => {
             )}
           />
           <Controller
-            name="isCompleted"
+            name="isImportant"
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <select name="isImportant" onChange={onImportantChange} value={String(field.value)}>
+              <select
+                name="isImportant"
+                disabled={formState.dirtyFields.isImportant}
+                onChange={onImportantChange}
+                value={String(field.value)}>
                 <option value="false">No</option>
                 <option value="true">Yes</option>
               </select>
@@ -128,7 +136,7 @@ export const TaskForm = () => {
           <button type="reset" onClick={() => reset()}>
             Reset
           </button>
-          <button type="submit">{task ? 'Send' : 'Change'}</button>
+          <button type="submit">{id ? 'Change' : 'Create'}</button>
         </form>
       </div>
     </Loader>

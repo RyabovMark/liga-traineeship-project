@@ -3,5 +3,4 @@ import { Fields } from 'types/redux';
 
 export interface ITodoProps {
   item: GetTaskResponse;
-  header: Fields;
 }

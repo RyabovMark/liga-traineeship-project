@@ -4,30 +4,28 @@ import { setPopupLoading, setTask, setTasks, toggleLoading } from './todoSlice';
 import Tasks from 'api/tasks';
 import { Fields } from 'types/redux';
 import { GetTaskResponse, PatchTaskRequest, PostTaskRequest } from 'types/taskApi';
-import { getField, getParams } from 'utils/getParams';
+import { getParams } from 'utils/getParams';
 
-export const fetchGetTasksCollection =
-  (field: Fields = 'All task', search?: string) =>
-  async (dispatch: Dispatch) => {
-    dispatch(toggleLoading({ value: true, field }));
-    try {
-      const { data } = await Tasks.getMany(getParams(field, search));
-      if (Array.isArray(data)) {
-        dispatch(setTasks({ data, field }));
-      } else {
-        throw new Error();
-      }
-    } catch (e) {
-      console.error(e);
-      dispatch(
-        setError({
-          message: `Произошла ошибка при получении коллекции ${field}`,
-        })
-      );
-    } finally {
-      dispatch(toggleLoading({ value: false, field }));
+export const fetchGetTasksCollection = (field: Fields, search?: string) => async (dispatch: Dispatch) => {
+  dispatch(toggleLoading({ value: true, field }));
+  try {
+    const { data } = await Tasks.getMany(getParams(field, search));
+    if (Array.isArray(data)) {
+      dispatch(setTasks({ data, field }));
+    } else {
+      throw new Error();
     }
-  };
+  } catch (e) {
+    console.error(e);
+    dispatch(
+      setError({
+        message: `Произошла ошибка при получении коллекции ${field}`,
+      })
+    );
+  } finally {
+    dispatch(toggleLoading({ value: false, field }));
+  }
+};
 
 export const fetchGetTask = (id: string) => async (dispatch: Dispatch) => {
   dispatch(toggleLoading({ value: true, field: 'Find one' }));
@@ -46,62 +44,45 @@ export const fetchGetTask = (id: string) => async (dispatch: Dispatch) => {
   }
 };
 
-export const fetchDeleteTask = (item: GetTaskResponse) => async (dispatch: Dispatch) => {
-  for (const key in item) {
-    if (key === 'isImportant' || key === 'isCompleted') {
-      let field;
-      if (key === 'isImportant') {
-        field = getField({ 'isImportant': item[key] });
+export const fetchDeleteTask =
+  (task: GetTaskResponse, field: Fields = 'All task') =>
+  async (dispatch: Dispatch) => {
+    dispatch(setPopupLoading(true));
+    dispatch(toggleLoading({ value: true, field }));
+    try {
+      await Tasks.deleteOne(String(task.id));
+      const { data } = await Tasks.getMany(getParams(field));
+      if (Array.isArray(data)) {
+        dispatch(setTasks({ data, field }));
       } else {
-        field = getField({ 'isCompleted': item[key] });
+        throw new Error();
       }
-      if (field) {
-        dispatch(setPopupLoading(true));
-        dispatch(toggleLoading({ value: true, field }));
-        try {
-          await Tasks.deleteOne(String(item.id));
-          const { data } = await Tasks.getMany(getParams(field));
-          if (Array.isArray(data)) {
-            dispatch(setTasks({ data, field }));
-          } else {
-            throw new Error();
-          }
-        } catch (e) {
-          console.error(e);
-          dispatch(setError({ message: 'Произошла ошибка при удалении задачи' }));
-        } finally {
-          dispatch(toggleLoading({ value: false, field }));
-          dispatch(setPopupLoading(false));
-        }
-      }
+    } catch (e) {
+      console.error(e);
+      dispatch(setError({ message: 'Произошла ошибка при удалении задачи' }));
+    } finally {
+      dispatch(toggleLoading({ value: false, field }));
+      dispatch(setPopupLoading(false));
     }
-  }
-};
+  };
 
-export const fetchPatchTask = (body: PatchTaskRequest) => async (dispatch: Dispatch) => {
-  try {
-    const { data } = await Tasks.patchTask(body);
-    dispatch(setTask({ data }));
-  } catch (e) {
-    console.error(e);
-    dispatch(setError({ message: 'Произошла ошибка' }));
-  }
-};
+export const fetchPatchTask =
+  (body: PatchTaskRequest, id: number | undefined = undefined) =>
+  async (dispatch: Dispatch) => {
+    try {
+      const { data } = await Tasks.patchTask({ ...body, id: id });
+      dispatch(setTask({ data }));
+    } catch (e) {
+      console.error(e);
+      dispatch(setError({ message: 'Произошла ошибка при обновлении задачи' }));
+    }
+  };
 
-export const fetchCreateTask = (body: PostTaskRequest, field: Fields) => async (dispatch: Dispatch) => {
-  dispatch(toggleLoading({ value: true, field }));
+export const fetchCreateTask = (body: PostTaskRequest) => async (dispatch: Dispatch) => {
   try {
     await Tasks.postTask(body);
-    const { data } = await Tasks.getMany(getParams(field));
-    if (Array.isArray(data)) {
-      dispatch(setTasks({ data, field }));
-    } else {
-      throw new Error();
-    }
   } catch (e) {
     console.error(e);
-    dispatch(setError({ message: 'Произошла ошибка' }));
-  } finally {
-    dispatch(toggleLoading({ value: false, field }));
+    dispatch(setError({ message: 'Произошла ошибка при создании задачи' }));
   }
 };

@@ -1,27 +1,31 @@
-import React, { createRef, useEffect, useState } from 'react';
+import React, { createRef, useCallback, useEffect, useState } from 'react';
 import './Header.css';
 import { useLocation } from 'react-router-dom';
+import { Box } from '@mui/material';
 import { UseDebounce } from '../../../../hooks/useDebounce';
+import { useAppDispatch } from '../../../../hooks/redux';
+import { setSearchBy } from '../../../../slices/todo/todoSlice';
 import { SearchInput } from 'components/SearchInput/SearchInput';
 import { NavButton } from 'components/NavButton';
 
 export const Header = (): JSX.Element => {
   const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
   const [to, setTo] = useState('/task_form');
   const [linkDesc, setLinkDesc] = useState('Создать задачу');
   const [searchValue, setSearchValue] = useState('');
   const inputRef = createRef<HTMLInputElement>();
   const debounceValue = UseDebounce<string>(searchValue);
 
-  const reset = (): void => {
+  const reset = useCallback(() => {
     setSearchValue('');
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  };
+  }, []);
 
   useEffect(() => {
-    console.log('скоро здесь будет тригер для сортировки запроса');
+    dispatch(setSearchBy(debounceValue));
   }, [debounceValue]);
 
   useEffect(() => {
@@ -36,11 +40,11 @@ export const Header = (): JSX.Element => {
   }, [pathname]);
 
   return (
-    <header className="header">
+    <Box component="header">
       <NavButton to={to} text={linkDesc} />
       {pathname === '/tasks_list' && (
         <SearchInput onChange={setSearchValue} value={searchValue} onReset={reset} ref={inputRef} />
       )}
-    </header>
+    </Box>
   );
 };
