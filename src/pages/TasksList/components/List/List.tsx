@@ -51,7 +51,6 @@ export const List = ({ header }: ITasksListProp): JSX.Element => {
       <Box component="div">
         {tasks.length >= 10 && (
           <Stack spacing={1}>
-            <Typography>Page: {currentPage}</Typography>
             <Pagination
               color="secondary"
               shape="rounded"

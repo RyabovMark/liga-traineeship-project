@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
+import { Box, Tooltip, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
@@ -23,7 +23,7 @@ export const Todo = ({ item }: ITodoProps) => {
       component="section"
       sx={{
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         alignItems: 'center',
         width: '400px',
         maxHeight: '60px',
@@ -39,28 +39,53 @@ export const Todo = ({ item }: ITodoProps) => {
         component="div"
         sx={{
           display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          width: '100%',
+          flexDirection: 'column',
+          flex: '1 1 auto',
         }}>
-        <Typography variant="h6" component="h6" sx={{ flex: '1 1 auto' }}>
+        <Typography variant="h6" component="h6" sx={{ flex: '1 1 auto', fontStyle: 'italic' }}>
           {item.name}
         </Typography>
-        <NavLink to={`/task_form/${item.id}`}>
-          <EditIcon fontSize="small" color="secondary" />
-        </NavLink>
+        <Typography component="p">{item.info}</Typography>
       </Box>
-      <Typography component="p">{item.info}</Typography>
       <Box
         component="div"
         sx={{
           display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          alignItems: 'end',
+          flex: '0 0 100',
         }}>
-        <DeleteIcon color="secondary" onClick={handleDeleteTodo} />
-        {item.isImportant && <AccessAlarmsIcon color="secondary" sx={{ flex: '1 1 auto' }} />}
-        {item.isCompleted ? <DoneAllIcon color="secondary" /> : <RemoveDoneIcon color="secondary" />}
+        <NavLink to={`/task_form/${item.id}`}>
+          <Tooltip title="Edit" placement="right-start">
+            <EditIcon fontSize="small" color="secondary" />
+          </Tooltip>
+        </NavLink>
+        <Box
+          component="div"
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          {item.isImportant && (
+            <Tooltip title="Important task" placement="left-end">
+              <AccessAlarmsIcon color="secondary" fontSize="small" sx={{ flex: '1 1 auto' }} />
+            </Tooltip>
+          )}
+          {item.isCompleted ? (
+            <Tooltip title="Done task" placement="left">
+              <DoneAllIcon color="secondary" />
+            </Tooltip>
+          ) : (
+            <Tooltip title="Not done task" placement="right">
+              <RemoveDoneIcon color="secondary" />
+            </Tooltip>
+          )}
+          <Tooltip title="Delete" placement="bottom-end">
+            <DeleteIcon color="secondary" onClick={handleDeleteTodo} />
+          </Tooltip>
+        </Box>
       </Box>
     </Box>
   );

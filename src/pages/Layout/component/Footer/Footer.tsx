@@ -6,8 +6,9 @@ export const Footer = (): JSX.Element => {
     <Box
       component="footer"
       sx={{
+        height: '70px',
         display: 'flex',
-        alignItem: 'center',
+        alignItems: 'center',
         justifyContent: 'center',
       }}>
       <Typography component="h6" variant="h6">

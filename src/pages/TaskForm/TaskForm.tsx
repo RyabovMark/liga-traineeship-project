@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
+import { Box, Checkbox, TextField } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchCreateTask, fetchGetTask, fetchPatchTask } from '../../slices/todo/todo.actions';
 import { setTask } from '../../slices/todo/todoSlice';
@@ -55,8 +56,8 @@ export const TaskForm = (): JSX.Element => {
   const onNameChange = (e: ChangeEvent<HTMLInputElement>) => setValue('name', e.target.value);
   const onInfoChange = (e: ChangeEvent<HTMLInputElement>) => setValue('info', e.target.value);
   //
-  const onCompletedChange = (e: ChangeEvent<HTMLSelectElement>) => setValue('isCompleted', JSON.parse(e.target.value));
-  const onImportantChange = (e: ChangeEvent<HTMLSelectElement>) => setValue('isImportant', JSON.parse(e.target.value));
+  const onCompletedChange = (e: ChangeEvent<HTMLInputElement>) => setValue('isCompleted', e.target.checked);
+  const onImportantChange = (e: ChangeEvent<HTMLInputElement>) => setValue('isImportant', e.target.checked);
 
   useEffect(() => {
     dispatch(setTask({}));
@@ -76,60 +77,54 @@ export const TaskForm = (): JSX.Element => {
 
   return (
     <Loader isLoading={isLoading}>
-      <div className="task-form">
+      <Box
+        sx={{
+          height: 'calc(100vh - 140px)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
             control={control}
             name="name"
             render={({ field, fieldState: { error } }) => (
-              <div>
-                <input
-                  value={field.value}
-                  onChange={onNameChange}
-                  type="text"
-                  className={`form-control ${error?.message ? 'is-invalid' : ''}`}
-                />
-                <div className="invalid-feedback">{error?.message}</div>
-              </div>
+              <TextField
+                size="medium"
+                color="secondary"
+                value={field.value}
+                onChange={onNameChange}
+                label="Name of task"
+                variant="outlined"
+              />
             )}
           />
           <Controller
             control={control}
             name="info"
             render={({ field, fieldState: { error } }) => (
-              <div>
-                <input
-                  value={field.value}
-                  onChange={onInfoChange}
-                  type="text"
-                  className={`form-control ${error?.message ? 'is-invalid' : ''}`}
-                />
-                <div className="invalid-feedback">{error?.message}</div>
-              </div>
+              <TextField
+                size="medium"
+                color="secondary"
+                value={field.value}
+                onChange={onInfoChange}
+                label="Task info"
+                variant="outlined"
+              />
             )}
           />
           <Controller
             name="isCompleted"
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <select name="isCompleted" onChange={onCompletedChange} value={String(field.value)}>
-                <option value="false">No</option>
-                <option value="true">Yes</option>
-              </select>
+              <Checkbox checked={field.value} onChange={onCompletedChange} />
             )}
           />
           <Controller
             name="isImportant"
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <select
-                name="isImportant"
-                disabled={formState.dirtyFields.isImportant}
-                onChange={onImportantChange}
-                value={String(field.value)}>
-                <option value="false">No</option>
-                <option value="true">Yes</option>
-              </select>
+              <Checkbox checked={field.value} onChange={onImportantChange} />
             )}
           />
           <button type="reset" onClick={() => reset()}>
@@ -137,7 +132,7 @@ export const TaskForm = (): JSX.Element => {
           </button>
           <button type="submit">{id ? 'Change' : 'Create'}</button>
         </form>
-      </div>
+      </Box>
     </Loader>
   );
 };
