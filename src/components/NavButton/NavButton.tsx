@@ -6,7 +6,7 @@ import { NavButtonProps } from 'components/NavButton/NavButton.types';
 export const NavButton = ({ to, text, children }: NavButtonProps): JSX.Element => {
   return (
     <NavLink to={to}>
-      <Button variant="contained" size="small" sx={{ fontSize: '16px' }}>
+      <Button variant="contained" color="secondary" size="small" sx={{ fontSize: '16px' }}>
         {text}
         {children}
       </Button>

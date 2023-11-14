@@ -23,6 +23,7 @@ const state: ICollection = {
   popupLoading: false,
   filter: 'All task',
   searchBy: '',
+  currentPage: 1,
 };
 
 export const todoSlice = createSlice({
@@ -47,8 +48,12 @@ export const todoSlice = createSlice({
     setSearchBy: (state, action: PayloadAction<string>) => {
       state.searchBy = action.payload;
     },
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload;
+    },
   },
 });
 
-export const { setSearchBy, setFilter, setTasks, setTask, toggleLoading, setPopupLoading } = todoSlice.actions;
+export const { setCurrentPage, setSearchBy, setFilter, setTasks, setTask, toggleLoading, setPopupLoading } =
+  todoSlice.actions;
 export default todoSlice.reducer;

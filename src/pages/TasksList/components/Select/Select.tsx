@@ -1,21 +1,22 @@
 import React from 'react';
-import './Select.css';
-import { FormControl, InputLabel, MenuItem, Select as Selector } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select as Selector, SelectChangeEvent } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
-import { setFilter } from '../../../../slices/todo/todoSlice';
+import { setCurrentPage, setFilter } from '../../../../slices/todo/todoSlice';
 import { SelectProps } from 'pages/TasksList/components/Select/Select.types';
+import { Fields } from 'types/redux';
 
 export const Select = ({ headers }: SelectProps): JSX.Element => {
   const filter = useAppSelector((state) => state.todo.filter);
   const dispatch = useAppDispatch();
 
-  const handleChange: SelectProps[onChange] = (e) => {
-    dispatch(setFilter(e.target.value));
+  const handleChange = (e: SelectChangeEvent) => {
+    dispatch(setCurrentPage(1));
+    dispatch(setFilter(e.target.value as Fields));
   };
 
   return (
-    <FormControl sx={{ maxWidth: 150 }}>
-      <InputLabel id="select">Age</InputLabel>
+    <FormControl sx={{ width: 200, margin: '10px 0' }}>
+      <InputLabel id="select">Set Filter</InputLabel>
       <Selector
         labelId="select"
         id="demo-simple-select-helper"

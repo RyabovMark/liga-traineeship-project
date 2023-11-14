@@ -24,7 +24,6 @@ export const axiosInstance = axios.create({
         const collection = response.filter(({ id, isCompleted, info, name, isImportant }: GetTaskResponse) => {
           return id && name && info && typeof isCompleted === 'boolean' && typeof isImportant === 'boolean';
         });
-        console.log(collection);
         return collection.reverse();
       }
       return JSON.parse(data);

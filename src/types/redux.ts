@@ -26,6 +26,7 @@ export interface ICollection {
   popupLoading: boolean;
   filter: Fields;
   searchBy: string;
+  currentPage: number;
 }
 
 export type Fields = 'All task' | 'Done' | 'Not done' | 'Important tasks' | 'Not important tasks' | 'By name';

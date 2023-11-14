@@ -40,8 +40,7 @@ export const Header = (): JSX.Element => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: { xs: '140px', md: '70px' },
-        background: '',
+        height: '70px',
       }}>
       {/*<Button variant="contained">{linkDesc}</Button>*/}
       <NavButton to={to} text={linkDesc}>

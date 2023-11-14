@@ -1,9 +1,9 @@
 import React from 'react';
-import './Container.css';
+import { Box } from '@mui/material';
 import { useAppSelector } from '../../hooks/redux';
-import { List } from 'pages/TasksList/components/List/List';
 import { Select } from 'pages/TasksList/components/Select/Select';
 import { ISelected } from 'pages/TasksList/components/Select/Select.types';
+import { List } from 'pages/TasksList/components/List/List';
 
 const listsHeaders: ISelected[] = [
   { title: 'All task', id: 1 },
@@ -16,11 +16,17 @@ export const Container = (): JSX.Element => {
   const filter = useAppSelector((state) => state.todo.filter);
 
   return (
-    <div className="list">
+    <Box
+      component="div"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'start',
+        width: '80%',
+        margin: '0 auto',
+      }}>
       <Select headers={listsHeaders} />
-      <div className="list-container">
-        {listsHeaders.map((list) => list.title === filter && <List key={list.id} header={list.title} />)}
-      </div>
-    </div>
+      {listsHeaders.map((list) => list.title === filter && <List key={list.id} header={list.title} />)}
+    </Box>
   );
 };
