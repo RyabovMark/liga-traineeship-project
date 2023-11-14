@@ -27,6 +27,7 @@ export const axiosInstance = axios.create({
         console.log(collection);
         return collection.reverse();
       }
+      return JSON.parse(data);
     },
   ],
 });

@@ -17,7 +17,7 @@ export const Container = (): JSX.Element => {
 
   return (
     <div className="list">
-      <Select headers={listsHeaders} className="list__select" />
+      <Select headers={listsHeaders} />
       <div className="list-container">
         {listsHeaders.map((list) => list.title === filter && <List key={list.id} header={list.title} />)}
       </div>

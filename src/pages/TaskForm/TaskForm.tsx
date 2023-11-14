@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
-import { types } from 'sass';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchCreateTask, fetchGetTask, fetchPatchTask } from '../../slices/todo/todo.actions';
 import { setTask } from '../../slices/todo/todoSlice';

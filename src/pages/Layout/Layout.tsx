@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
-import { Box } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Header } from './component/Header/Header';
 import { Footer } from './component/Footer/Footer';
-import './Layout.css';
 
 export const Layout = (): JSX.Element => {
   const location = useLocation();
@@ -16,12 +15,28 @@ export const Layout = (): JSX.Element => {
   }, [location]);
 
   return (
-    <Box component="div" className="container">
-      <Header />
-      <Box component="main">
-        <Outlet />
-      </Box>
-      <Footer />
-    </Box>
+    <>
+      <Container
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          background: 'linear-gradient(45deg, #fff1eb, #ACE0D5)',
+          minWidth: '320px',
+          minHeight: '100vh',
+        }}>
+        <Header />
+        <Box
+          component="main"
+          sx={{
+            flex: '1 0 auto',
+            overflow: 'hidden',
+            maxHeight: 'calc(100vh - 140px)',
+            maxWidth: 'lg',
+          }}>
+          <Outlet />
+        </Box>
+        <Footer />
+      </Container>
+    </>
   );
 };

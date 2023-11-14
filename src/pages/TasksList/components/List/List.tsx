@@ -16,7 +16,9 @@ export const List = ({ header }: ITasksListProp): JSX.Element => {
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    dispatch(fetchGetTasksCollection(header, searchBy));
+    if (collection[header].length === 0) {
+      dispatch(fetchGetTasksCollection(header, searchBy));
+    }
   }, [searchBy]);
 
   return (

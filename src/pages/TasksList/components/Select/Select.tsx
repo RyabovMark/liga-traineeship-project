@@ -1,53 +1,35 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import './Select.css';
+import { FormControl, InputLabel, MenuItem, Select as Selector } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { setFilter } from '../../../../slices/todo/todoSlice';
 import { SelectProps } from 'pages/TasksList/components/Select/Select.types';
-import { BotArrow, TopArrow } from 'assets/icons';
 
-export const Select = ({ headers, className }: SelectProps): JSX.Element => {
+export const Select = ({ headers }: SelectProps): JSX.Element => {
   const filter = useAppSelector((state) => state.todo.filter);
   const dispatch = useAppDispatch();
-  const [displayDropdown, setDisplayDropdown] = useState<boolean>(false);
-  const classes = `dropdown ${className}`;
-  const fieldRef = useRef<HTMLFieldSetElement>(null);
 
-  const mouseMoveHandle = (): void => {
-    setDisplayDropdown((prevState) => !prevState);
+  const handleChange: SelectProps[onChange] = (e) => {
+    dispatch(setFilter(e.target.value));
   };
 
-  useEffect(() => {
-    if (fieldRef.current) {
-      fieldRef.current.addEventListener('mouseover', mouseMoveHandle);
-      return () => document.removeEventListener('mouseenter', mouseMoveHandle);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (fieldRef.current) {
-      fieldRef.current.addEventListener('mouseout', mouseMoveHandle);
-      return () => document.removeEventListener('mouseout', mouseMoveHandle);
-    }
-  }, []);
-
   return (
-    <fieldset className={classes} ref={fieldRef}>
-      <button onClick={mouseMoveHandle}>--Select a task list--{displayDropdown ? <TopArrow /> : <BotArrow />}</button>
-      {displayDropdown && (
-        <div className="dropdown__panel">
-          {headers.map((title) => (
-            <div className="dropdown__panel-field" key={title.id}>
-              <input
-                id={`input-${title.title}`}
-                checked={title.title === filter}
-                type="checkbox"
-                onChange={() => dispatch(setFilter(title.title))}
-              />
-              <label htmlFor={`input-${title.title}`}>{title.title}</label>
-            </div>
-          ))}
-        </div>
-      )}
-    </fieldset>
+    <FormControl sx={{ maxWidth: 150 }}>
+      <InputLabel id="select">Age</InputLabel>
+      <Selector
+        labelId="select"
+        id="demo-simple-select-helper"
+        value={filter}
+        label="Select a filter"
+        size="small"
+        color="secondary"
+        onChange={handleChange}>
+        {headers.map((title) => (
+          <MenuItem key={title.id} value={title.title}>
+            {title.title}
+          </MenuItem>
+        ))}
+      </Selector>
+    </FormControl>
   );
 };

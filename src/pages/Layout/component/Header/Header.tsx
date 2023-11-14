@@ -1,7 +1,8 @@
-import React, { createRef, useCallback, useEffect, useState } from 'react';
-import './Header.css';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import HomeIcon from '@mui/icons-material/Home';
 import { UseDebounce } from '../../../../hooks/useDebounce';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { setSearchBy } from '../../../../slices/todo/todoSlice';
@@ -14,15 +15,7 @@ export const Header = (): JSX.Element => {
   const [to, setTo] = useState('/task_form');
   const [linkDesc, setLinkDesc] = useState('Создать задачу');
   const [searchValue, setSearchValue] = useState('');
-  const inputRef = createRef<HTMLInputElement>();
   const debounceValue = UseDebounce<string>(searchValue);
-
-  const reset = useCallback(() => {
-    setSearchValue('');
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
 
   useEffect(() => {
     dispatch(setSearchBy(debounceValue));
@@ -31,20 +24,30 @@ export const Header = (): JSX.Element => {
   useEffect(() => {
     if (pathname === '/tasks_list') {
       setTo('/task_form');
-      setLinkDesc('Создать задачу');
+      setLinkDesc('Create a task');
     }
     if (pathname !== '/tasks_list') {
       setTo('/tasks_list');
-      setLinkDesc('Вернуться на главную');
+      setLinkDesc('Back to homepage');
     }
   }, [pathname]);
 
   return (
-    <Box component="header">
-      <NavButton to={to} text={linkDesc} />
-      {pathname === '/tasks_list' && (
-        <SearchInput onChange={setSearchValue} value={searchValue} onReset={reset} ref={inputRef} />
-      )}
+    <Box
+      component="header"
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        height: { xs: '140px', md: '70px' },
+        background: '',
+      }}>
+      {/*<Button variant="contained">{linkDesc}</Button>*/}
+      <NavButton to={to} text={linkDesc}>
+        {pathname !== '/tasks_list' ? <HomeIcon fontSize="small" /> : <AddIcon fontSize="small" />}
+      </NavButton>
+      {pathname === '/tasks_list' && <SearchInput onChange={setSearchValue} value={searchValue} />}
     </Box>
   );
 };

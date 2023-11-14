@@ -1,6 +1,7 @@
+import { ReactNode } from 'react';
+
 export interface NavButtonProps {
-  text: string;
+  text?: string;
   to: string;
-  className?: string;
-  onClick?: () => void;
+  children?: ReactNode;
 }
