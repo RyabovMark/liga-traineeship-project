@@ -8,7 +8,7 @@ const logger = createLogger({ collapsed: true });
 export const store = configureStore({
   reducer: {
     todo: todoReducer,
-    error: errorReducer,
+    error: errorReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
 });
