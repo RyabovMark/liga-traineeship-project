@@ -19,7 +19,7 @@ export const fetchGetTasksCollection = (field: Fields, search?: string) => async
     console.error(e);
     dispatch(
       setError({
-        message: `Произошла ошибка при получении коллекции ${field}`,
+        message: `An error occurred while retrieving the collection: ${field}`,
       })
     );
   } finally {
@@ -38,7 +38,7 @@ export const fetchGetTask = (id: string) => async (dispatch: Dispatch) => {
     }
   } catch (e) {
     console.error(e);
-    dispatch(setError({ message: `Произошла ошибка при получении информации о задаче с id:${id}` }));
+    dispatch(setError({ message: `An error occurred while retrieving information about the task with id:${id}` }));
   } finally {
     dispatch(toggleLoading({ value: false, field: 'Find one' }));
   }
@@ -59,7 +59,7 @@ export const fetchDeleteTask =
       }
     } catch (e) {
       console.error(e);
-      dispatch(setError({ message: 'Произошла ошибка при удалении задачи' }));
+      dispatch(setError({ message: `An error occurred when deleting a task with id:${task.id}` }));
     } finally {
       dispatch(toggleLoading({ value: false, field }));
       dispatch(setPopupLoading(false));

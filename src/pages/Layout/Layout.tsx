@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { Box, Container } from '@mui/material';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Header } from './component/Header/Header';
-import { Footer } from './component/Footer/Footer';
+import { Footer, Header } from './index';
 
 export const Layout = (): JSX.Element => {
   const location = useLocation();

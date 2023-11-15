@@ -4,3 +4,7 @@ export interface ITaskSubmitForm {
   isCompleted: boolean;
   isImportant: boolean;
 }
+
+export interface ISearchSubmitForm {
+  search: string | number;
+}

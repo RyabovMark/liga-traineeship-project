@@ -4,10 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { store } from './store';
-import { Container } from 'pages/TasksList/Container';
-import { TaskForm } from 'pages/TaskForm/TaskForm';
-import { ErrorPage } from 'pages/ErrorPage/ErrorPage';
-import { Layout } from 'pages/Layout/Layout';
+import { Container, ErrorPage, Layout, TaskForm } from 'pages/index';
 
 const router = createBrowserRouter([
   {

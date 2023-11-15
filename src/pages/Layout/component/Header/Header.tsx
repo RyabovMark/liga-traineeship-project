@@ -7,7 +7,7 @@ import { UseDebounce } from '../../../../hooks/useDebounce';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { setSearchBy } from '../../../../slices/todo/todoSlice';
 import { SearchInput } from 'components/SearchInput/SearchInput';
-import { NavButton } from 'components/NavButton';
+import { NavButton } from 'components/index';
 
 export const Header = (): JSX.Element => {
   const { pathname } = useLocation();

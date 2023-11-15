@@ -1,14 +1,16 @@
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import './TaskForm.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
-import { Box, Checkbox, TextField } from '@mui/material';
+import { Box, Checkbox, TextField, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchCreateTask, fetchGetTask, fetchPatchTask } from '../../slices/todo/todo.actions';
 import { setTask } from '../../slices/todo/todoSlice';
 import { ITaskSubmitForm } from 'types/react-hook-form';
-import { Loader } from 'components/Loader';
+import { Error, Loader } from 'components/index';
 
 export const TaskForm = (): JSX.Element => {
   const { id } = useParams();
@@ -18,6 +20,7 @@ export const TaskForm = (): JSX.Element => {
     collection: { 'Find one': task },
     loadings,
   } = useAppSelector((state) => state.todo);
+  const { value } = useAppSelector((state) => state.error);
   const isLoading = loadings['Find one'];
 
   const validationSchema = Yup.object().shape({
@@ -33,14 +36,13 @@ export const TaskForm = (): JSX.Element => {
     isImportant: Yup.bool(),
   });
 
-  const { formState, handleSubmit, reset, control, setValue } = useForm<ITaskSubmitForm>({
+  const { handleSubmit, reset, control, setValue } = useForm<ITaskSubmitForm>({
     defaultValues: {
       name: '',
       info: '',
       isCompleted: false,
       isImportant: false,
     },
-    mode: 'onBlur',
     resolver: yupResolver(validationSchema),
   });
 
@@ -53,12 +55,6 @@ export const TaskForm = (): JSX.Element => {
     return navigate('..');
   };
 
-  const onNameChange = (e: ChangeEvent<HTMLInputElement>) => setValue('name', e.target.value);
-  const onInfoChange = (e: ChangeEvent<HTMLInputElement>) => setValue('info', e.target.value);
-  //
-  const onCompletedChange = (e: ChangeEvent<HTMLInputElement>) => setValue('isCompleted', e.target.checked);
-  const onImportantChange = (e: ChangeEvent<HTMLInputElement>) => setValue('isImportant', e.target.checked);
-
   useEffect(() => {
     dispatch(setTask({}));
     id && dispatch(fetchGetTask(id));
@@ -66,73 +62,113 @@ export const TaskForm = (): JSX.Element => {
 
   useEffect(() => {
     if (task) {
-      reset({
-        name: task.name,
-        info: task.info,
-        isCompleted: task.isCompleted,
-        isImportant: task.isImportant,
-      });
+      setValue('isImportant', task.isImportant || false);
+      setValue('isCompleted', task.isCompleted || false);
+      setValue('name', task.name || '');
+      setValue('info', task.info || '');
     }
   }, [task]);
 
   return (
-    <Loader isLoading={isLoading}>
-      <Box
-        sx={{
-          height: 'calc(100vh - 140px)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Controller
-            control={control}
-            name="name"
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                size="medium"
-                color="secondary"
-                value={field.value}
-                onChange={onNameChange}
-                label="Name of task"
-                variant="outlined"
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name="info"
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                size="medium"
-                color="secondary"
-                value={field.value}
-                onChange={onInfoChange}
-                label="Task info"
-                variant="outlined"
-              />
-            )}
-          />
-          <Controller
-            name="isCompleted"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <Checkbox checked={field.value} onChange={onCompletedChange} />
-            )}
-          />
-          <Controller
-            name="isImportant"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <Checkbox checked={field.value} onChange={onImportantChange} />
-            )}
-          />
-          <button type="reset" onClick={() => reset()}>
-            Reset
-          </button>
-          <button type="submit">{id ? 'Change' : 'Create'}</button>
-        </form>
-      </Box>
-    </Loader>
+    <Box
+      sx={{
+        height: 'calc(100vh - 140px)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Loader isLoading={isLoading}>
+        {value ? (
+          <Error value={value} />
+        ) : (
+          <form onSubmit={handleSubmit(onSubmit)} className="form">
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { value, onChange }, fieldState: { error } }) => (
+                <TextField
+                  size="medium"
+                  error={!!error}
+                  value={value}
+                  onChange={onChange}
+                  label="Name of task"
+                  variant="outlined"
+                  sx={{
+                    minWidth: '100%',
+                  }}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="info"
+              render={({ field: { value, onChange }, fieldState: { error } }) => (
+                <TextField
+                  size="medium"
+                  error={!!error}
+                  value={value}
+                  onChange={onChange}
+                  label="Task info"
+                  variant="outlined"
+                  sx={{
+                    minWidth: '100%',
+                  }}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="isCompleted"
+              render={({ field: { value, onChange } }) => (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width: '100%',
+                    justifyContent: 'flex start',
+                  }}>
+                  <Typography sx={{ flex: '0 0 180px' }}>Is it completed task?</Typography>
+                  <Checkbox checked={value} onChange={onChange} />
+                </Box>
+              )}
+            />
+            <Controller
+              control={control}
+              name="isImportant"
+              render={({ field: { value, onChange } }) => (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width: '100%',
+                    justifyContent: 'flex start',
+                  }}>
+                  <Typography sx={{ flex: '0 0 180px' }}>Is it important task?</Typography>
+                  <Checkbox disabled={true} checked={value} onChange={onChange} />
+                </Box>
+              )}
+            />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: '100%',
+                justifyContent: 'space-between',
+                padding: '0 30px',
+              }}>
+              <Button variant="contained" size="medium" type="reset" onClick={() => reset()}>
+                Reset
+              </Button>
+              <Button variant="contained" size="medium" type="submit">
+                {id ? 'Change' : 'Create'}
+              </Button>
+            </Box>
+          </form>
+        )}
+      </Loader>
+    </Box>
   );
 };

@@ -6,7 +6,10 @@ export const ErrorPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => navigate('..'), 5000);
+    const timer = setTimeout(() => navigate('..'), 5000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   return (
