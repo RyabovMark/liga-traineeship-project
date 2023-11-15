@@ -4,7 +4,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "jsx": "react-jsx",
     "lib": [
       "dom",
@@ -25,14 +25,9 @@
     "strictNullChecks": true,
     "target": "es2017",
     "types": [
-      "@testing-library/cypress",
-      "@testing-library/jest-dom",
-      "@testing-library/react",
-      "cypress",
       "jest",
       "node",
-      "webpack-env",
-      "reflect-metadata"
+      "webpack-env"
     ],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -71,5 +66,7 @@
       ]
     }
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

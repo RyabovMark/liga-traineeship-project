@@ -1,7 +1,35 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { TasksList } from 'pages/TasksList/TasksList';
+import { TaskForm } from 'pages/TaskForm/TaskForm';
+import { ErrorPage } from 'pages/ErrorPage/ErrorPage';
+import { Layout } from 'pages/Layout/Layout';
 
-const container = document.getElementById('root');
-const root = createRoot(container as HTMLElement);
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: 'tasks_list/',
+        element: <TasksList />,
+      },
+      {
+        path: 'task_form',
+        element: <TaskForm />,
+      },
+      {
+        path: 'task_form/:id',
+        element: <TaskForm />,
+      },
+    ],
+  },
+]);
 
-root.render(<h1>todo app</h1>);
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
+);

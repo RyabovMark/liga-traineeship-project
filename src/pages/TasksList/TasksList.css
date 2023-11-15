@@ -1,0 +1,36 @@
+.list-container {
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+  gap: 2em;
+  height: calc(100vh - 140px);
+}
+
+.list-container > *::-webkit-scrollbar {
+  width: 12px;
+  background-color: transparent;
+}
+
+.list-container > *::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7e8080, #C1C7D0);
+  border-radius: 6px;
+  height: 20px;
+}
+
+.list-container__done-block, .list-container__notdone-block {
+  flex: 0 1 50%;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  background-color: #D0D3DC;
+  border-radius: 30px;
+  padding: 30px;
+}
+
+/*Пожалуйста не смейся :)*/
+.list-container > * > * {
+  margin-bottom: 20px;
+}
+
+.list-container > * :last-child {
+  margin-bottom: 0;
+}
