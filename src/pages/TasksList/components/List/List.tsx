@@ -3,9 +3,9 @@ import { Box, Pagination, Stack } from '@mui/material';
 import { fetchGetTasksCollection } from '../../../../slices/todo/todo.actions';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { setCurrentPage } from '../../../../slices/todo/todoSlice';
-import { Loader, Error } from 'components/index';
+import { Todo } from './index';
+import { Error, Loader } from 'components/index';
 import { ITasksListProp } from 'pages/TasksList/components/List/List.types';
-import { Todo } from 'pages/TasksList/components/Todo/Todo';
 
 const ListTask = ({ header }: ITasksListProp): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -51,7 +51,9 @@ const ListTask = ({ header }: ITasksListProp): JSX.Element => {
               gap: '10px',
             }}>
             <Loader isLoading={isLoading}>
-              {!value && currentTask.map((item) => <Todo key={item.id} item={item} />)}
+              {currentTask.map((item) => (
+                <Todo key={item.id} item={item} />
+              ))}
             </Loader>
           </Box>
           <Box component="div">

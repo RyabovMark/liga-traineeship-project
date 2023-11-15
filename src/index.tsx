@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { store } from './store';
-import { Container, ErrorPage, Layout, TaskForm } from 'pages/index';
+import { ErrorPage, Layout, TaskForm, TaskList } from 'pages/index';
 
 const router = createBrowserRouter([
   {
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: 'tasks_list/',
-        element: <Container />,
+        element: <TaskList />,
       },
       {
         path: 'task_form',

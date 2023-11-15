@@ -1,9 +1,8 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { useAppSelector } from '../../hooks/redux';
-import { Select } from 'pages/TasksList/components/Select/Select';
+import { List, Select } from './index';
 import { ISelected } from 'pages/TasksList/components/Select/Select.types';
-import { List } from 'pages/TasksList/components/List/List';
 
 const listsHeaders: ISelected[] = [
   { title: 'All task', id: 1 },
@@ -12,7 +11,8 @@ const listsHeaders: ISelected[] = [
   { title: 'Important tasks', id: 4 },
   { title: 'Not important tasks', id: 5 },
 ];
-export const Container = (): JSX.Element => {
+
+export const TaskList = (): JSX.Element => {
   const filter = useAppSelector((state) => state.todo.filter);
 
   return (

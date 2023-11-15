@@ -36,7 +36,7 @@ export const TaskForm = (): JSX.Element => {
     isImportant: Yup.bool(),
   });
 
-  const { handleSubmit, reset, control, setValue } = useForm<ITaskSubmitForm>({
+  const { handleSubmit, watch, reset, control, setValue } = useForm<ITaskSubmitForm>({
     defaultValues: {
       name: '',
       info: '',
@@ -45,6 +45,8 @@ export const TaskForm = (): JSX.Element => {
     },
     resolver: yupResolver(validationSchema),
   });
+
+  const done = watch('isCompleted');
 
   const onSubmit = async (body: ITaskSubmitForm) => {
     if (id) {
@@ -146,7 +148,7 @@ export const TaskForm = (): JSX.Element => {
                     justifyContent: 'flex start',
                   }}>
                   <Typography sx={{ flex: '0 0 180px' }}>Is it important task?</Typography>
-                  <Checkbox disabled={true} checked={value} onChange={onChange} />
+                  <Checkbox disabled={done} checked={done ? false : value} onChange={onChange} />
                 </Box>
               )}
             />
