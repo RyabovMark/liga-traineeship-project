@@ -15,7 +15,8 @@
     "lint:styles": "stylelint ./src/**/*.css",
     "fix:styles": "stylelint --fix ./src/**/*.css",
     "lint:ts": "eslint src/**/*.{ts,tsx}",
-    "fix:ts": "eslint src/**/*.{ts,tsx} --quiet --fix"
+    "fix:ts": "eslint src/**/*.{ts,tsx} --quiet --fix",
+    "swagger-ts": "npx openapi-typescript http://37.220.80.108/swagger.json -o src/types/api.ts"
   },
   "author": "",
   "license": "ISC",
@@ -28,6 +29,7 @@
     "@types/react": "18.0.12",
     "@types/react-dom": "18.0.5",
     "@types/react-redux": "7.1.28",
+    "@types/redux-logger": "^3.0.12",
     "@types/webpack-env": "1.17.0",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
@@ -91,8 +93,11 @@
     "webpack-merge": "5.8.0"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "2.9.9",
-    "@mui/material": "5.10.9",
+    "@mui/icons-material": "^5.14.18",
+    "@mui/material": "^5.10.9",
     "@mui/system": "5.10.9",
     "@mui/x-data-grid": "5.17.7",
     "@mui/x-date-pickers": "5.0.4",

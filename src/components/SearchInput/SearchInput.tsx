@@ -1,49 +1,43 @@
-import React, { ChangeEventHandler, forwardRef, MouseEvent, useRef } from 'react';
-import './SearchInput.css';
+import React, { ChangeEventHandler } from 'react';
+import { TextField } from '@mui/material';
+import * as Yup from 'yup';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { SearchInputProps } from './SearchInput.types';
+import { ISearchSubmitForm } from 'types/react-hook-form';
 
-export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function SearchInput(
-  { onChange, value, onReset },
-  ref
-) {
-  const btnRef = useRef<HTMLButtonElement>(null);
-  const onSearchInputChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
-    onChange(evt.target.value);
-    if (btnRef.current) {
-      btnRef.current.classList.replace('close', 'open');
-    }
+export const SearchInput = ({ onChange, value }: SearchInputProps): JSX.Element => {
+  const onSearchInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setValue('search', e.target.value);
+    onChange(e.target.value);
   };
 
-  const onResetBtnClick = (evt: MouseEvent<HTMLButtonElement>) => {
-    evt.preventDefault();
-    if (btnRef.current) {
-      btnRef.current.classList.replace('open', 'close');
-    }
-    if (onReset) onReset();
-  };
+  const validationSchema = Yup.object().shape({
+    search: Yup.string().max(7, 'Search must not exceed 7 characters'),
+  });
 
-  const onBlurInput = (): void => {
-    if (btnRef.current) {
-      if (!value.length) {
-        btnRef.current.classList.replace('open', 'close');
-      }
-      return;
-    }
-  };
+  const { control, setValue } = useForm<ISearchSubmitForm>({
+    defaultValues: {
+      search: value,
+    },
+    resolver: yupResolver(validationSchema),
+  });
 
   return (
-    <div className="search-panel">
-      <input
-        className="form-control search-input"
-        placeholder="Search task"
-        ref={ref}
-        onChange={onSearchInputChange}
-        value={value}
-        onBlur={onBlurInput}
-      />
-      <button ref={btnRef} className="reset-btn close" onClick={onResetBtnClick}>
-        <i className="fa fa-close"></i>
-      </button>
-    </div>
+    <Controller
+      control={control}
+      name="search"
+      render={({ field, fieldState: { error } }) => (
+        <TextField
+          error={!!error}
+          size="small"
+          color="secondary"
+          value={field.value}
+          onChange={onSearchInputChange}
+          label="Search..."
+          variant="outlined"
+        />
+      )}
+    />
   );
-});
+};

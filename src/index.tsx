@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { TasksList } from 'pages/TasksList/TasksList';
-import { TaskForm } from 'pages/TaskForm/TaskForm';
-import { ErrorPage } from 'pages/ErrorPage/ErrorPage';
-import { Layout } from 'pages/Layout/Layout';
+import { Provider } from 'react-redux';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { store } from './store';
+import { ErrorPage, Layout, TaskForm, TaskList } from 'pages/index';
 
 const router = createBrowserRouter([
   {
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: 'tasks_list/',
-        element: <TasksList />,
+        element: <TaskList />,
       },
       {
         path: 'task_form',
@@ -28,8 +28,39 @@ const router = createBrowserRouter([
   },
 ]);
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#81d4fa',
+    },
+    secondary: {
+      main: '#2C2C2CA5',
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 320,
+      md: 768,
+      lg: 992,
+      xl: 1280,
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+        },
+      },
+    },
+  },
+});
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <ThemeProvider theme={theme}>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </ThemeProvider>
 );
